@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
+
 import 'package:exportarfm/data/databaseController.dart';
 import 'package:flutter/material.dart';
 import 'package:exportarfm/components/listaInventario.dart';
@@ -5,10 +7,12 @@ import 'package:exportarfm/components/actualProduct.dart';
 import 'package:exportarfm/util/excel.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -17,23 +21,23 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Exportar datos excel'),
+      home: const MyHomePage(title: 'Exportar datos excel'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // Future<List<Map>> _productos = databaseController();
-  List<Map> _productos;
+  late List<Map> _productos;
   List<Map> _inventariado = [
     // {'nombre': 'Prueba', 'cantidad': 0}
   ];
@@ -46,14 +50,15 @@ class _MyHomePageState extends State<MyHomePage> {
     "precioUnitario": null
   };
   // ignore: missing_return
-  Function selectProduct(Map product) {
+  void selectProduct(Map product) {
     print(product);
     setState(() {
       _actualProduct = product;
     });
   }
 
-  Function productChange(Map product) {
+// ignore: missing_return
+  void productChange(Map product) {
     try {
       Map productChanged = _inventariado
           .firstWhere((element) => element['nombre'] == product['nombre']);
@@ -90,10 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
     print(_productos);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Almacen DIALGO"),
+        title: const Text("Almacen DIALGO"),
         actions: [
           IconButton(
-              icon: Icon(Icons.send),
+              icon: const Icon(Icons.send),
               onPressed: () {
                 print('i was pressed');
                 generarExcel(_inventariado);
@@ -109,7 +114,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ListaInveWidget(_inventariado, selectProduct, _selected),
+                    ListaInveWidget(
+                      _inventariado,
+                      selectProduct,
+                      _selected,
+                      key: null,
+                    ),
                   ],
                 ),
               )

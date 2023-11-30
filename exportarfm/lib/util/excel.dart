@@ -1,14 +1,16 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
+import 'package:excel/excel.dart';
 import 'package:path/path.dart';
-import 'package:exportarfm/util/excel.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 
 generarExcel(List<Map> inventario) async {
   Directory appDocDir = await getApplicationDocumentsDirectory();
   var excel = Excel.createExcel();
-  await excel.setDefaultSheet('Inventario');
-  String defaultText = await excel.getDefaultSheet();
+  excel.setDefaultSheet('Inventario');
+  String defaultText = excel.getDefaultSheet() ?? 'DefaultSheetName';
   excel.updateCell(defaultText,
       CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0), 'Producto');
   excel.updateCell(defaultText,
@@ -50,11 +52,11 @@ generarExcel(List<Map> inventario) async {
   // printing cell-type
   // print("CellType: "+ cell.cellType.toString());
   print(appDocDir.path);
-  excel.encode().then((onValue) {
-    File(join(appDocDir.path + "/excel.xlsx"))
+  Future.sync(() => excel.encode()).then((onValue) {
+    File(join(appDocDir.path, "excel.xlsx"))
       ..createSync(recursive: true)
-      ..writeAsBytesSync(onValue);
-  }).then((value) => Share.shareFiles([appDocDir.path + "/excel.xlsx"]));
+      ..writeAsBytesSync(onValue!);
+  }).then((value) => Share.shareFiles([join(appDocDir.path, "excel.xlsx")]));
 
   // var sh = new Share();
 }

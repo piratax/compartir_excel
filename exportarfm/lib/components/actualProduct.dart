@@ -1,29 +1,30 @@
+// ignore_for_file: no_logic_in_create_state, avoid_print
+
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class ActualProductWidget extends StatefulWidget {
-  Map _productoActual;
-  Function(Map) _changeInveProduct;
-  ActualProductWidget(this._productoActual, this._changeInveProduct, {Key key})
+  Map productoActual;
+  Function(Map) changeInveProduct;
+  ActualProductWidget(this.productoActual, this.changeInveProduct, {Key? key})
       : super(key: key);
   @override
-  _ActualProductWidgetState createState() =>
-      _ActualProductWidgetState(this._productoActual, this._changeInveProduct);
+  ActualProductWidgetState createState() =>
+      ActualProductWidgetState(productoActual, changeInveProduct);
 }
 
-class _ActualProductWidgetState extends State<ActualProductWidget> {
-  _ActualProductWidgetState(
-      Map productoActual, Function(Map) changeInveProduct);
+class ActualProductWidgetState extends State<ActualProductWidget> {
+  ActualProductWidgetState(Map productoActual, Function(Map) changeInveProduct);
 
-  // Map _productoActual;
+  // Map productoActual;
   // int index;
-  // _ActualProductWidgetState(this._productoActual,this.index);
+  // ActualProductWidgetState(this.productoActual,this.index);
 
   @override
   Widget build(BuildContext context) {
     final myController = TextEditingController(
-        text: widget._productoActual['cantidad'] != 0
-            ? widget._productoActual['cantidad'].toString()
+        text: widget.productoActual['cantidad'] != 0
+            ? widget.productoActual['cantidad'].toString()
             : '');
     return Container(
       color: Colors.white,
@@ -31,7 +32,7 @@ class _ActualProductWidgetState extends State<ActualProductWidget> {
         padding: const EdgeInsets.fromLTRB(25, 10, 25, 0),
         child: Column(
           children: [
-            Text(widget._productoActual['nombre']),
+            Text(widget.productoActual['nombre']),
             TextField(
               decoration: const InputDecoration(
                 hintText: 'Cantidad',
@@ -45,9 +46,9 @@ class _ActualProductWidgetState extends State<ActualProductWidget> {
               // },
               onEditingComplete: () {
                 print(myController.text);
-                Map tempProduct = widget._productoActual;
+                Map tempProduct = widget.productoActual;
                 tempProduct['cantidad'] = int.parse(myController.text);
-                widget._changeInveProduct(tempProduct);
+                widget.changeInveProduct(tempProduct);
                 FocusScope.of(context).requestFocus(FocusNode());
               },
             ),
